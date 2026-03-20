@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kyle Mertz — Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050a0e;
+    --surface: #0a1219;
+    --card: #0d1720;
+    --border: #162030;
+    --border2: #1e3045;
+    --accent: #00d4ff;
+    --accent2: #00ff9d;
+    --accent3: #ff6b35;
+    --text: #deeaf5;
+    --muted: #4a6b85;
+    --light: #8baec8;
+    --grid: rgba(0, 212, 255, 0.03);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: -20%; left: -10%;
+    width: 70%; height: 70%;
+    background: radial-gradient(ellipse, rgba(0,212,255,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes scan {
+    0% { top: -2px; }
+    100% { top: 100vh; }
+  }
+
+  .scanline {
+    position: fixed;
+    left: 0; width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0,212,255,0.15), transparent);
+    animation: scan 8s linear infinite;
+    pointer-events: none;
+    z-index: 99;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 48px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(5,10,14,0.88);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  .nav-cta {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); text-decoration: none;
+    border: 1px solid rgba(0,212,255,0.3); padding: 8px 16px;
+    transition: all 0.2s;
+  }
+  .nav-cta:hover { background: rgba(0,212,255,0.08); border-color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    padding-top: 70px;
+  }
+
+  .hero-content {
+    padding: 80px 60px;
+    display: flex; flex-direction: column; justify-content: center;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+
+  .hero-content::before {
+    content: '';
+    position: absolute;
+    top: 80px; left: 60px;
+    width: 50px; height: 50px;
+    border-top: 2px solid var(--accent);
+    border-left: 2px solid var(--accent);
+    opacity: 0.5;
+  }
+
+  .status-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,255,157,0.07);
+    border: 1px solid rgba(0,255,157,0.2);
+    padding: 6px 14px; font-size: 10px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent2); width: fit-content; margin-bottom: 32px;
+    opacity: 0; animation: slideIn 0.5s 0.2s forwards;
+  }
+
+  .status-dot {
+    width: 6px; height: 6px;
+    background: var(--accent2); border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .hero-name {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(52px, 7vw, 96px); line-height: 0.9;
+    letter-spacing: -0.02em; color: var(--text);
+    opacity: 0; animation: slideIn 0.6s 0.35s forwards;
+  }
+
+  .hero-name .outline {
+    display: block; color: transparent;
+    -webkit-text-stroke: 1.5px var(--accent);
+    font-size: 0.78em;
+  }
+
+  .hero-role {
+    font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent); margin-top: 20px;
+    opacity: 0; animation: slideIn 0.6s 0.5s forwards;
+  }
+
+  .hero-bio {
+    font-size: 13px; line-height: 1.85; color: var(--light);
+    max-width: 520px; margin-top: 28px;
+    opacity: 0; animation: slideIn 0.6s 0.6s forwards;
+  }
+
+  .hero-bio strong { color: var(--accent2); font-weight: 400; }
+
+  .hero-actions {
+    display: flex; gap: 16px; margin-top: 40px;
+    opacity: 0; animation: slideIn 0.6s 0.75s forwards;
+  }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--accent); color: var(--bg);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; font-weight: 400;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    text-decoration: none; padding: 14px 24px;
+    transition: all 0.2s; border: none; cursor: pointer;
+  }
+  .btn-primary:hover {
+    background: #33ddff; transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,212,255,0.3);
+  }
+
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: transparent; color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; font-weight: 300;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    text-decoration: none; padding: 14px 24px;
+    border: 1px solid var(--border2); transition: all 0.2s;
+  }
+  .btn-secondary:hover {
+    border-color: var(--accent); color: var(--accent); transform: translateY(-2px);
+  }
+
+  /* SIDEBAR */
+  .hero-sidebar {
+    display: flex; flex-direction: column;
+    opacity: 0; animation: fadeIn 0.8s 1s forwards;
+  }
+
+  .photo-area {
+    height: 280px; position: relative;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden; display: flex;
+    align-items: center; justify-content: center;
+    background: var(--surface);
+  }
+
+  .photo-scan {
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    animation: photoscan 3s ease-in-out infinite; opacity: 0.6;
+  }
+
+  @keyframes photoscan {
+    0% { top: 0; opacity: 0.6; }
+    50% { top: calc(100% - 2px); opacity: 0.3; }
+    100% { top: 0; opacity: 0.6; }
+  }
+
+  .avatar-wrap {
+    position: relative; width: 150px; height: 150px;
+  }
+
+  .avatar-wrap::before {
+    content: '';
+    position: absolute; top: -6px; left: -6px;
+    width: 22px; height: 22px;
+    border-top: 2px solid var(--accent);
+    border-left: 2px solid var(--accent);
+  }
+
+  .avatar-wrap::after {
+    content: '';
+    position: absolute; bottom: -6px; right: -6px;
+    width: 22px; height: 22px;
+    border-bottom: 2px solid var(--accent2);
+    border-right: 2px solid var(--accent2);
+  }
+
+  .avatar-inner {
+    width: 150px; height: 150px;
+    background: var(--card);
+    border: 1px solid var(--border2);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 8px;
+  }
+
+  .avatar-icon { font-size: 50px; opacity: 0.25; }
+
+  .avatar-label {
+    font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+    text-align: center; line-height: 1.5;
+  }
+
+  .stat-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat-cell {
+    padding: 18px 20px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-cell:nth-child(even) { border-right: none; }
+  .stat-cell:nth-last-child(-n+2) { border-bottom: none; }
+
+  .stat-value {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 26px; color: var(--accent); line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted); margin-top: 3px;
+  }
+
+  .contact-block {
+    padding: 22px; display: flex; flex-direction: column;
+    gap: 10px; flex: 1;
+  }
+
+  .contact-row {
+    display: flex; align-items: center; gap: 10px; font-size: 11px;
+  }
+
+  .contact-key {
+    color: var(--muted); font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase; width: 58px; flex-shrink: 0;
+  }
+
+  .contact-val { color: var(--light); }
+  .contact-val a { color: var(--accent); text-decoration: none; transition: color 0.2s; }
+  .contact-val a:hover { color: #33ddff; }
+
+  .linkedin-btn {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(0,119,181,0.1);
+    border: 1px solid rgba(0,119,181,0.3);
+    color: #4fc3f7;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    text-decoration: none; padding: 13px 18px;
+    margin: 0 22px 22px;
+    transition: all 0.2s;
+  }
+  .linkedin-btn:hover {
+    background: rgba(0,119,181,0.2);
+    border-color: #4fc3f7;
+    transform: translateX(4px);
+  }
+
+  .li-icon { width: 16px; height: 16px; fill: #4fc3f7; flex-shrink: 0; }
+
+  /* MAIN */
+  .main { position: relative; z-index: 1; }
+
+  .section {
+    max-width: 1400px; margin: 0 auto;
+    padding: 80px 48px; border-bottom: 1px solid var(--border);
+  }
+
+  .section-header {
+    display: flex; align-items: baseline; gap: 18px; margin-bottom: 44px;
+  }
+
+  .sec-num {
+    font-size: 11px; letter-spacing: 0.2em;
+    color: var(--accent); font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .sec-title {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 30px; letter-spacing: -0.01em; color: var(--text);
+  }
+
+  .sec-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+  }
+
+  /* HIGHLIGHTS */
+  .highlights-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+  }
+
+  .highlight-card {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 30px; position: relative; overflow: hidden;
+    opacity: 0; transform: translateY(20px);
+  }
+
+  .highlight-card.visible {
+    opacity: 1; transform: translateY(0);
+    transition: opacity 0.5s, transform 0.5s, border-color 0.3s;
+  }
+
+  .highlight-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 100%; height: 2px; background: var(--accent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .highlight-card:hover { border-color: var(--border2); transform: translateY(-3px); transition: all 0.3s; }
+  .highlight-card:hover::before { transform: scaleX(1); }
+
+  .highlight-glyph { font-size: 26px; margin-bottom: 14px; }
+
+  .highlight-title {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 17px; color: var(--text); margin-bottom: 8px;
+  }
+
+  .highlight-desc {
+    font-size: 11px; line-height: 1.75; color: var(--light);
+  }
+
+  .highlight-tag {
+    display: inline-block; font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent);
+    border: 1px solid rgba(0,212,255,0.2); padding: 3px 8px; margin-top: 14px;
+  }
+
+  /* TECH STACK */
+  .tech-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+
+  .tech-item {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 18px 22px; display: flex; align-items: center; gap: 12px;
+    opacity: 0; transform: translateX(-10px);
+  }
+
+  .tech-item.visible {
+    opacity: 1; transform: translateX(0);
+    transition: opacity 0.4s, transform 0.4s, border-color 0.2s, background 0.2s;
+  }
+
+  .tech-item:hover { border-color: var(--accent2); background: rgba(0,255,157,0.03); }
+
+  .tech-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .tech-name { font-size: 12px; color: var(--text); letter-spacing: 0.03em; }
+  .tech-category { font-size: 9px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
+
+  /* EXPERIENCE */
+  .timeline { display: flex; flex-direction: column; gap: 2px; }
+
+  .job-row {
+    display: grid; grid-template-columns: 190px 1fr;
+    background: var(--card); border: 1px solid var(--border);
+    overflow: hidden; transition: border-color 0.3s;
+    opacity: 0; transform: translateY(15px);
+  }
+
+  .job-row.visible {
+    opacity: 1; transform: translateY(0);
+    transition: opacity 0.5s, transform 0.5s, border-color 0.3s;
+  }
+
+  .job-row:hover { border-color: var(--accent); }
+  .job-row:hover .job-side { background: rgba(0,212,255,0.03); }
+
+  .job-side {
+    padding: 22px 18px; border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; justify-content: space-between;
+    transition: background 0.3s;
+  }
+
+  .job-co {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 13px; color: var(--text); line-height: 1.2;
+  }
+
+  .job-loc {
+    font-size: 9px; color: var(--muted); letter-spacing: 0.1em;
+    text-transform: uppercase; margin-top: 3px;
+  }
+
+  .job-period {
+    font-size: 10px; color: var(--accent3);
+    letter-spacing: 0.05em; margin-top: 10px; font-style: italic;
+  }
+
+  .job-content { padding: 22px 26px; }
+
+  .job-role {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent2); margin-bottom: 10px;
+  }
+
+  .job-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+
+  .tag {
+    font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 3px 8px; border: 1px solid var(--border2); color: var(--muted);
+    transition: all 0.2s;
+  }
+  .tag.lead { border-color: rgba(0,212,255,0.25); color: var(--accent); }
+  .tag.ops  { border-color: rgba(0,255,157,0.2); color: var(--accent2); }
+  .tag.tech { border-color: rgba(255,107,53,0.25); color: var(--accent3); }
+
+  .job-bullets { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+
+  .job-bullets li {
+    font-size: 11px; color: var(--light); line-height: 1.65;
+    padding-left: 18px; position: relative;
+  }
+
+  .job-bullets li::before {
+    content: '›'; position: absolute; left: 0;
+    color: var(--accent); font-size: 14px; line-height: 1.3;
+  }
+
+  /* EDUCATION */
+  .edu-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+
+  .edu-card {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 36px; position: relative; overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .edu-card:hover { border-color: var(--accent2); }
+
+  .edu-bg-year {
+    position: absolute; right: 16px; bottom: -10px;
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 80px; color: rgba(0,212,255,0.04);
+    letter-spacing: -0.03em; line-height: 1; pointer-events: none;
+  }
+
+  .edu-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent2); border: 1px solid rgba(0,255,157,0.2);
+    padding: 4px 10px; margin-bottom: 18px;
+  }
+
+  .edu-title {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 20px; color: var(--text); margin-bottom: 6px;
+  }
+
+  .edu-school {
+    font-size: 11px; color: var(--muted);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  /* FOOTER */
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 30px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-left {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 14px; letter-spacing: 0.1em;
+    color: var(--muted); text-transform: uppercase;
+  }
+
+  .footer-right {
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  /* ANIMATIONS */
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .hero { grid-template-columns: 1fr; }
+    .highlights-grid { grid-template-columns: 1fr 1fr; }
+    .tech-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (max-width: 700px) {
+    nav { padding: 14px 20px; }
+    .nav-links { display: none; }
+    .hero-content { padding: 60px 24px; }
+    .section { padding: 50px 20px; }
+    .highlights-grid, .tech-grid, .edu-row { grid-template-columns: 1fr; }
+    .job-row { grid-template-columns: 1fr; }
+    .job-side { border-right: none; border-bottom: 1px solid var(--border); }
+    footer { padding: 22px; flex-direction: column; gap: 6px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scanline"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">KM</div>
+  <ul class="nav-links">
+    <li><a href="#highlights">Leadership</a></li>
+    <li><a href="#tech">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+  </ul>
+  <a href="https://www.linkedin.com/in/kyle-mertz" target="_blank" rel="noopener" class="nav-cta">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    LinkedIn
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="status-pill">
+      <span class="status-dot"></span>
+      Kansas City Metro · Open to Opportunities
+    </div>
+
+    <h1 class="hero-name">
+      <span class="outline">Kyle</span>
+      Mertz
+    </h1>
+
+    <div class="hero-role">Operations Leader · Multi-Industry Tech · Team Builder</div>
+
+    <p class="hero-bio">
+      15+ years turning complex operations into <strong>smooth, scalable systems</strong>. From leading warehouse logistics and managing restaurant teams to precision installation and QA — I bring <strong>hands-on technical depth</strong> and a natural ability to <strong>lead people, build processes, and execute</strong>.
+    </p>
+
+    <div class="hero-actions">
+      <a href="https://www.linkedin.com/in/kyle-mertz" target="_blank" rel="noopener" class="btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        Kyle Mertz | LinkedIn
+      </a>
+      <a href="tel:8168355898" class="btn-secondary">📞 816-835-5898</a>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="hero-sidebar">
+    <div class="photo-area">
+      <div class="photo-scan"></div>
+      <div class="avatar-wrap">
+        <div class="avatar-inner">
+          <div class="avatar-icon">👤</div>
+          <div class="avatar-label">Add your photo<br>on LinkedIn</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-cell">
+        <div class="stat-value">15+</div>
+        <div class="stat-label">Yrs Exp.</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-value">9</div>
+        <div class="stat-label">Industries</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Mgmt Roles</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-value">1x</div>
+        <div class="stat-label">Certified</div>
+      </div>
+    </div>
+
+    <div class="contact-block">
+      <div class="contact-row">
+        <span class="contact-key">Phone</span>
+        <span class="contact-val"><a href="tel:8168355898">816-835-5898</a></span>
+      </div>
+      <div class="contact-row">
+        <span class="contact-key">Location</span>
+        <span class="contact-val">Kansas City, MO</span>
+      </div>
+    
+    </div>
+
+    <a href="https://www.linkedin.com/in/kyle-mertz" target="_blank" rel="noopener" class="linkedin-btn">
+      <svg class="li-icon" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      Kyle Mertz | LinkedIn →
+    </a>
+  </div>
+</section>
+
+<main class="main">
+
+  <!-- LEADERSHIP -->
+  <section class="section" id="highlights">
+    <div class="section-header">
+      <span class="sec-num">// 01</span>
+      <h2 class="sec-title">Leadership Highlights</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="highlights-grid">
+      <div class="highlight-card">
+        <div class="highlight-glyph">🏗</div>
+        <div class="highlight-title">Team Building & Training</div>
+        <div class="highlight-desc">Hired, onboarded, and developed teams across hospitality and operations. Built training programs from scratch and created scheduling infrastructure that scaled with demand.</div>
+        <span class="highlight-tag">People Leadership</span>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-glyph">⚙️</div>
+        <div class="highlight-title">Operations Management</div>
+        <div class="highlight-desc">End-to-end ownership of daily operations — opening/closing procedures, inventory control, order fulfillment, and cross-functional team coordination.</div>
+        <span class="highlight-tag">Process Ownership</span>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-glyph">📊</div>
+        <div class="highlight-title">Reporting & Accountability</div>
+        <div class="highlight-desc">Maintained manifests, Excel spreadsheets, run reports, commission tracking, and daily inventory audits — keeping operations data-driven and transparent.</div>
+        <span class="highlight-tag">Data Management</span>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-glyph">🌐</div>
+        <div class="highlight-title">Community & Networking</div>
+        <div class="highlight-desc">Joined First Friday Community Board, drove alcohol licensing efforts, and launched promotions — demonstrating leadership extending beyond internal operations.</div>
+        <span class="highlight-tag">External Relations</span>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-glyph">🔬</div>
+        <div class="highlight-title">Quality Assurance Systems</div>
+        <div class="highlight-desc">MSDS-compliant electronic assembly and testing at Civacon — built quality into workflows through systematic testing, documentation, and shipment verification protocols.</div>
+        <span class="highlight-tag">QA · Compliance</span>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-glyph">🚀</div>
+        <div class="highlight-title">High-Volume Execution</div>
+        <div class="highlight-desc">Managed up to 50 vehicle installs per day at Adrian Steel — coordinating multi-station workflows under pressure while maintaining precision and quality benchmarks.</div>
+        <span class="highlight-tag">High-Output Ops</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH STACK -->
+  <section class="section" id="tech">
+    <div class="section-header">
+      <span class="sec-num">// 02</span>
+      <h2 class="sec-title">Technical Skill Stack</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="tech-grid" id="tech-grid">
+      <div class="tech-item"><div class="tech-dot" style="background:#00d4ff"></div><div><div class="tech-name">Forklift Operation</div><div class="tech-category">Warehouse · Logistics</div></div></div>
+      <div class="tech-item"><div class="tech-dot" style="background:#00ff9d"></div><div><div class="tech-name">Scheduling Systems</div><div class="tech-category">Operations · Management</div></div></div>
+      <div class="tech-item"><div class="tech-dot" style="background:#ff6b35"></div><div><div class="tech-name">Blueprint Reading</div><div class="tech-category">Installation · Trades</div></div></div>
+      <div class="tech-item"><div class="tech-dot" style="background:#00d4ff"></div><div><div class="tech-name">Inventory Control</div><div class="tech-category">Ops · Supply Chain</div></div></div>
+      <div class="tech-item"><div class="tech-dot" style="background:#00ff9d"></div><div><div class="tech-name">HVAC / Plumbing</div><div class="tech-category">Mechanical · Trades</div></div></div>
+      <div class="tech-item"><div class="tech-dot" style="background:#ff6b35"></div><div><div class="tech-name">Electrical Wiring</div><div class="tech-category">Electronics · Install</div></div></div>
+      <div class="tech-item"><div class="tech-dot" style="background:#00d4ff"></div><div><div class="tech-name">Excel & Reporting</div><div class="tech-category">Data · Administration</div></div></div>
+      <div class="tech-item"><div class="tech-dot" style="background:#00ff9d"></div><div><div class="tech-name">Electronic Assembly</div><div class="tech-category">QA · Manufacturing</div></div></div>
+      <div class="tech-item"><div class="tech-dot" style="background:#ff6b35"></div><div><div class="tech-name">MSDS Compliance</div><div class="tech-category">Safety · Quality</div></div></div>
+      <div class="tech-item"><div class="tech-dot" style="background:#00d4ff"></div><div><div class="tech-name">Direct Sales</div><div class="tech-category">Revenue · Marketing</div></div></div>
+      <div class="tech-item"><div class="tech-dot" style="background:#00ff9d"></div><div><div class="tech-name">Event Coordination</div><div class="tech-category">Hospitality · Events</div></div></div>
+    </div></div></div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="section" id="experience">
+    <div class="section-header">
+      <span class="sec-num">// 03</span>
+      <h2 class="sec-title">Professional Experience</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="timeline" id="timeline">
+
+      <div class="job-row">
+        <div class="job-side">
+          <div><div class="job-co">Foodlove Café</div><div class="job-loc">Kansas City, MO</div></div>
+          <div class="job-period">04/2021 — 09/2022</div>
+        </div>
+        <div class="job-content">
+          <div class="job-role">Lead Server / Asst. Manager</div>
+          <div class="job-tags">
+            <span class="tag lead">Leadership</span><span class="tag ops">Scheduling</span><span class="tag ops">Inventory</span><span class="tag tech">Networking</span>
+          </div>
+          <ul class="job-bullets">
+            <li>Opened/closed restaurant and managed all front-of-house operations</li>
+            <li>Interviewed, hired, and trained staff; built scheduling and wine/beer inventory systems</li>
+            <li>Coordinated parties, to-go orders, and phone operations while ensuring patron satisfaction</li>
+            <li>Drove alcohol licensing efforts, promotions, and joined First Friday Community Board</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="job-row">
+        <div class="job-side">
+          <div><div class="job-co">Alpha Broder</div><div class="job-loc">Edwardsville, KS</div></div>
+          <div class="job-period">04/2019 — 06/2020</div>
+        </div>
+        <div class="job-content">
+          <div class="job-role">Material Handler II</div>
+          <div class="job-tags">
+            <span class="tag tech">Forklift</span><span class="tag ops">Fulfillment</span><span class="tag ops">Inventory</span>
+          </div>
+          <ul class="job-bullets">
+            <li>Operated cherry picker forklift and scan gun in high-volume warehouse</li>
+            <li>Pulled and staged merchandise to fulfill orders accurately and on schedule</li>
+            <li>Resolved inventory discrepancies to maintain fulfillment efficiency</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="job-row">
+        <div class="job-side">
+          <div><div class="job-co">Crane Freight</div><div class="job-loc">Kansas City, MO</div></div>
+          <div class="job-period">08/2017 — 2018</div>
+        </div>
+        <div class="job-content">
+          <div class="job-role">Lead Forklift Operator</div>
+          <div class="job-tags">
+            <span class="tag lead">Lead Role</span><span class="tag tech">Forklift</span><span class="tag ops">Reporting</span><span class="tag tech">Excel</span>
+          </div>
+          <ul class="job-bullets">
+            <li>Created and maintained manifests from packing lists; printed labels and staged product for loading</li>
+            <li>Coordinated container close-out and truck driver sign-out via Excel</li>
+            <li>Ran inventory reports and managed scan-in processes for inbound and outbound freight</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="job-row">
+        <div class="job-side">
+          <div><div class="job-co">J.E.D. Installation</div><div class="job-loc">Basehor, KS</div></div>
+          <div class="job-period">10/2014 — 08/2019</div>
+        </div>
+        <div class="job-content">
+          <div class="job-role">Installer</div>
+          <div class="job-tags">
+            <span class="tag tech">Blueprints</span><span class="tag tech">Casework</span><span class="tag ops">QC</span>
+          </div>
+          <ul class="job-bullets">
+            <li>Read blueprints and shop plans to stage, uncrate, and position casework on-site</li>
+            <li>Verified measurements and elevation levels; applied epoxy for tabletop finishes</li>
+            <li>Managed site cleanliness and equipment prep across multiple projects</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="job-row">
+        <div class="job-side">
+          <div><div class="job-co">Adrian Steel</div><div class="job-loc">Kansas City, MO</div></div>
+          <div class="job-period">02/2014 — 10/2014</div>
+        </div>
+        <div class="job-content">
+          <div class="job-role">Installer</div>
+          <div class="job-tags">
+            <span class="tag tech">High-Volume</span><span class="tag tech">Electrical</span><span class="tag tech">Custom Fab</span><span class="tag ops">Inventory</span>
+          </div>
+          <ul class="job-bullets">
+            <li>Executed up to 50 vehicle installs/day across multiple timed production stations</li>
+            <li>Installed window grates, CNG fuel tanks, inverters, backup cameras, and emergency lights</li>
+            <li>Customized parts with precision tools and jigs; maintained monthly inventory counts</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="job-row">
+        <div class="job-side">
+          <div><div class="job-co">Civacon</div><div class="job-loc">Riverside, MO</div></div>
+          <div class="job-period">08/2013 — 02/2014</div>
+        </div>
+        <div class="job-content">
+          <div class="job-role">QA Tech / Electronic Assembler</div>
+          <div class="job-tags">
+            <span class="tag lead">Quality Assurance</span><span class="tag tech">Electronics</span><span class="tag tech">MSDS</span>
+          </div>
+          <ul class="job-bullets">
+            <li>Assembled electronic components for fuel trucks following MSDS guidelines</li>
+            <li>Machined Level Measurement Probes and tested Rack Monitors for quality and operational accuracy</li>
+            <li>Packaged and shipped components with proper documentation; assisted loss prevention</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="job-row">
+        <div class="job-side">
+          <div><div class="job-co">KC Event Marketing</div><div class="job-loc">Overland Park, KS</div></div>
+          <div class="job-period">2011 — 2013</div>
+        </div>
+        <div class="job-content">
+          <div class="job-role">Leadership Sales</div>
+          <div class="job-tags">
+            <span class="tag lead">Team Lead</span><span class="tag lead">Training</span><span class="tag ops">Sales</span><span class="tag ops">Admin</span>
+          </div>
+          <ul class="job-bullets">
+            <li>Ran morning briefings and training sessions on marketing systems and sales pitch execution</li>
+            <li>Verified insurance coverage and processed invoices to ensure accurate commission payouts</li>
+            <li>Conducted daily inventory audits and maintained professional event setup standards</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="job-row">
+        <div class="job-side">
+          <div><div class="job-co">LBA HVAC &amp; Plumbing</div><div class="job-loc">Merriam, KS</div></div>
+          <div class="job-period">2006 — 2007</div>
+        </div>
+        <div class="job-content">
+          <div class="job-role">Technician Assistant</div>
+          <div class="job-tags">
+            <span class="tag tech">HVAC</span><span class="tag tech">Plumbing</span><span class="tag tech">Electrical</span><span class="tag ops">Inventory</span>
+          </div>
+          <ul class="job-bullets">
+            <li>Installed and wired A/C units, water heaters, and coils; ran coolant, gas, PVC, and thermostat lines</li>
+            <li>Constructed ductwork and delivered equipment to jobsites using forklift</li>
+            <li>Maintained warehouse and conducted quarterly inventory counts</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section class="section" id="education">
+    <div class="section-header">
+      <span class="sec-num">// 04</span>
+      <h2 class="sec-title">Education & Certifications</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="edu-row">
+      <div class="edu-card">
+        <div class="edu-bg-year">2005</div>
+        <div class="edu-badge">✓ Graduate</div>
+        <div class="edu-title">High School Diploma</div>
+        <div class="edu-school">Shawnee Mission Northwest · Shawnee, KS</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-left">Kyle Mertz</div>
+  <div class="footer-right">816-835-5898 · Kansas City Metro</div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.07 });
+
+  document.querySelectorAll('.highlight-card, .job-row, .tech-item').forEach((el, i) => {
+    el.style.transitionDelay = (i % 6) * 55 + 'ms';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
